@@ -44,4 +44,6 @@ app.*.map.json
 
 #env
 .env
-env.g.dart
+*.g.dart
+
+*.freezed.dart
