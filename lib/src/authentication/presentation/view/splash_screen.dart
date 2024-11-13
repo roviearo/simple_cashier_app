@@ -14,9 +14,14 @@ class SplashScreen extends StatelessWidget {
         if (state is Authenticated) {
           await Future.delayed(const Duration(seconds: 3))
               .then((value) => router.goNamed('main'));
+        } else if (state is OfflineAuthenticated) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Anda sedang dalam mode offline')));
+          await Future.delayed(const Duration(seconds: 3))
+              .then((value) => router.goNamed('main'));
         } else {
           await Future.delayed(const Duration(seconds: 3))
-              .then((value) => router.goNamed('login'));
+              .then((value) => router.goNamed('login_register'));
         }
       },
       builder: (context, state) {

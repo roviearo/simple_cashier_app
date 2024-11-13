@@ -43,12 +43,13 @@ class AuthenticationRepositoryImplementation
   }
 
   @override
-  ResultVoid signUp({required String email, required String password}) async {
+  ResultFuture<supabase.User?> signUp(
+      {required String email, required String password}) async {
     try {
-      await _authenticationRemoteDataSource.signUp(
+      final result = await _authenticationRemoteDataSource.signUp(
           email: email, password: password);
 
-      return const Right(null);
+      return Right(result);
     } on APIException catch (e) {
       return Left(APIFailure.fromException(e));
     }

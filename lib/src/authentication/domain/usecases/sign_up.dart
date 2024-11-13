@@ -1,16 +1,18 @@
 import 'package:equatable/equatable.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 import '../../../../core/usecase/usecase.dart';
 import '../../../../core/utils/typedef.dart';
 import '../repository/authentication_repository.dart';
 
-class SignUp extends UsecaseWithParams<void, SignUpParams> {
+class SignUp extends UsecaseWithParams<supabase.User?, SignUpParams> {
   SignUp(this._repository);
 
   final AuthenticationRepository _repository;
 
   @override
-  ResultFuture<void> call(SignUpParams params) async => _repository.signUp(
+  ResultFuture<supabase.User?> call(SignUpParams params) async =>
+      _repository.signUp(
         email: params.email,
         password: params.password,
       );

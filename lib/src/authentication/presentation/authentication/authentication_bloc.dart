@@ -75,7 +75,8 @@ class AuthenticationBloc
 
   _onAuthUserChanged(
       AuthUserChanged event, Emitter<AuthenticationState> emit) async {
-    if (event.session?.accessToken != null) {
+    if (event.session?.accessToken != null &&
+        event.session?.user.emailConfirmedAt != null) {
       _saveAccessToken
           .call(SaveAccessTokenParams(value: event.session?.accessToken));
       emit(const Authenticated());

@@ -5,6 +5,7 @@ abstract class AuthenticationRepository {
   Stream<supabase.AuthState> authState();
   ResultFuture<supabase.User?> signIn(
       {required String email, required String password});
-  ResultVoid signUp({required String email, required String password});
+  ResultFuture<supabase.User?> signUp(
+      {required String email, required String password});
   ResultVoid signOut();
 }

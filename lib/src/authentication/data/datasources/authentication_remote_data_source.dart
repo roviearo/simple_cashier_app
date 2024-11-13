@@ -5,7 +5,8 @@ abstract class AuthenticationRemoteDataSource {
   Stream<supabase.AuthState> authState();
   Future<supabase.User?> signIn(
       {required String email, required String password});
-  Future<void> signUp({required String email, required String password});
+  Future<supabase.User?> signUp(
+      {required String email, required String password});
   Future<void> signOut();
 }
 
@@ -35,12 +36,15 @@ class AuthRemoteDataSrcImpl implements AuthenticationRemoteDataSource {
   }
 
   @override
-  Future<void> signUp({required String email, required String password}) async {
+  Future<supabase.User?> signUp(
+      {required String email, required String password}) async {
     try {
-      await _auth.signUp(
+      final response = await _auth.signUp(
         email: email,
         password: password,
       );
+
+      return response.user;
     } on supabase.AuthException catch (e) {
       throw APIException(
           message: e.message,

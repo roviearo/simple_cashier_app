@@ -10,7 +10,9 @@ abstract class AuthenticationSecureStorageRemoteDataSource {
 
 class AuthenticationSecureStorageDataSrcImpl
     implements AuthenticationSecureStorageRemoteDataSource {
-  final _storage = const FlutterSecureStorage();
+  AuthenticationSecureStorageDataSrcImpl(this._storage);
+
+  final FlutterSecureStorage _storage;
 
   @override
   Future<String?> getAccessToken() async {
