@@ -54,6 +54,27 @@ class MainApp extends StatelessWidget {
           iconTheme: IconThemeData(
             color: lightColorScheme.primary,
           ),
+          filledButtonTheme: FilledButtonThemeData(
+            style: ButtonStyle(
+                shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                padding: const WidgetStatePropertyAll<EdgeInsets>(
+                    EdgeInsets.all(15))),
+          ),
+          outlinedButtonTheme: OutlinedButtonThemeData(
+            style: ButtonStyle(
+              shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              padding:
+                  const WidgetStatePropertyAll<EdgeInsets>(EdgeInsets.all(15)),
+            ),
+          ),
         ),
         darkTheme: ThemeData(
           colorScheme: darkColorScheme,
@@ -61,6 +82,27 @@ class MainApp extends StatelessWidget {
           fontFamily: 'Poppins',
           iconTheme: IconThemeData(
             color: darkColorScheme.primary,
+          ),
+          filledButtonTheme: FilledButtonThemeData(
+            style: ButtonStyle(
+                shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                padding: const WidgetStatePropertyAll<EdgeInsets>(
+                    EdgeInsets.all(15))),
+          ),
+          outlinedButtonTheme: OutlinedButtonThemeData(
+            style: ButtonStyle(
+              shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              padding:
+                  const WidgetStatePropertyAll<EdgeInsets>(EdgeInsets.all(15)),
+            ),
           ),
         ),
       ),

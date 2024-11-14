@@ -1,4 +1,5 @@
 import 'package:simple_cashier_app/core/utils/typedef.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 abstract class AuthenticationRepository {
@@ -8,4 +9,6 @@ abstract class AuthenticationRepository {
   ResultFuture<supabase.User?> signUp(
       {required String email, required String password});
   ResultVoid signOut();
+  ResultFuture<Database> getLocalDatabase();
+  ResultFuture<Database> initDb();
 }

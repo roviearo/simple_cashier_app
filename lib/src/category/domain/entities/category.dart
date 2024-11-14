@@ -6,7 +6,8 @@ class Category extends Equatable {
     required this.id,
     required this.name,
     required this.createdAt,
-    required this.updatedAt,
+    this.updatedAt,
+    required this.isSynced,
   });
 
   const Category.empty()
@@ -15,13 +16,15 @@ class Category extends Equatable {
           name: '',
           createdAt: const ConstDateTime(2024),
           updatedAt: const ConstDateTime(2024),
+          isSynced: false,
         );
 
   final int id;
   final String name;
   final DateTime createdAt;
   final DateTime? updatedAt;
+  final bool isSynced;
 
   @override
-  List<Object?> get props => [id, name, createdAt, updatedAt];
+  List<Object?> get props => [id, name, createdAt, updatedAt, isSynced];
 }

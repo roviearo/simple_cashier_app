@@ -36,28 +36,35 @@ class _CategoryScreenState extends State<CategoryScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
+                const SizedBox(height: 10),
+                IntrinsicHeight(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                          controller: nameCategory,
+                          onChanged: (value) => context
+                              .read<AddCategoryCubit>()
+                              .nameChanged(value),
                         ),
-                        controller: nameCategory,
-                        onChanged: (value) =>
-                            context.read<AddCategoryCubit>().nameChanged(value),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    FilledButton(
-                      onPressed: () {
-                        if (nameCategory.text.isNotEmpty) {
-                          context.read<AddCategoryCubit>().addCategory();
-                        }
-                      },
-                      child: SvgPicture.asset('icons/add.svg'),
-                    ),
-                  ],
+                      const SizedBox(width: 20),
+                      SizedBox(
+                        height: double.infinity,
+                        child: FilledButton(
+                          onPressed: () {
+                            if (nameCategory.text.isNotEmpty) {
+                              context.read<AddCategoryCubit>().addCategory();
+                            }
+                          },
+                          child: SvgPicture.asset('icons/add.svg'),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 10),
                 BlocBuilder<ListCategoryCubit, ListCategoryState>(
@@ -65,28 +72,49 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     final listCategory = state.listCategory;
 
                     if (listCategory.isEmpty) {
-                      return const Center(
-                        child: Text('Tidak ada data kategori'),
+                      return const Expanded(
+                        child: Center(
+                          child: Text('Tidak ada data kategori'),
+                        ),
                       );
                     }
 
-                    return ListView.builder(
-                      itemCount: listCategory.length,
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Row(
-                          children: [
-                            Text(listCategory[index].name),
-                            const Expanded(child: SizedBox.shrink()),
-                            IconButton(
-                              onPressed: () {},
-                              icon: SvgPicture.asset('icons/edit.svg'),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: SvgPicture.asset('icons/minus.svg'),
-                            ),
-                          ],
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: listCategory.length,
+                        itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(listCategory[index].name),
+                                  const Expanded(child: SizedBox.shrink()),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: SvgPicture.asset(
+                                      'icons/edit.svg',
+                                      colorFilter: ColorFilter.mode(
+                                        Theme.of(context).colorScheme.primary,
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: SvgPicture.asset(
+                                      'icons/minus.svg',
+                                      colorFilter: ColorFilter.mode(
+                                        Theme.of(context).colorScheme.primary,
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Divider(),
+                            ],
+                          ),
                         ),
                       ),
                     );

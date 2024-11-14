@@ -18,7 +18,11 @@ class CategoryRemoteDataSrcImpl implements CategoryRemoteDataSource {
   @override
   Future<void> addCategory(String name) async {
     try {
-      await _supabaseClient.from('categories').insert({'name': name});
+      await _supabaseClient.from('categories').insert({
+        'name': name,
+        'created_at': DateTime.now().toIso8601String(),
+        'updated_at': DateTime.now().toIso8601String(),
+      });
     } on APIException catch (e) {
       throw APIException(message: e.message, statusCode: 505);
     }
