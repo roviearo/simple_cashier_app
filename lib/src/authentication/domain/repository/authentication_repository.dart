@@ -10,5 +10,4 @@ abstract class AuthenticationRepository {
       {required String email, required String password});
   ResultVoid signOut();
   ResultFuture<Database> getLocalDatabase();
-  ResultFuture<Database> initDb();
 }

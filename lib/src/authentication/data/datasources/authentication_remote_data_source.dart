@@ -1,4 +1,7 @@
+import 'package:path/path.dart';
 import 'package:simple_cashier_app/core/errors/exception.dart';
+import 'package:simple_cashier_app/core/utils/constants.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 abstract class AuthenticationRemoteDataSource {
@@ -8,12 +11,14 @@ abstract class AuthenticationRemoteDataSource {
   Future<supabase.User?> signUp(
       {required String email, required String password});
   Future<void> signOut();
+  Future<Database> getLocalDatabase();
 }
 
 class AuthRemoteDataSrcImpl implements AuthenticationRemoteDataSource {
   AuthRemoteDataSrcImpl(this._auth);
 
   final supabase.GoTrueClient _auth;
+  static Database? _database;
 
   @override
   Future<supabase.User?> signIn({
@@ -61,5 +66,21 @@ class AuthRemoteDataSrcImpl implements AuthenticationRemoteDataSource {
   @override
   Stream<supabase.AuthState> authState() {
     return _auth.onAuthStateChange;
+  }
+
+  @override
+  Future<Database> getLocalDatabase() async {
+    if (_database != null) return _database!;
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, Constants.dbName);
+
+    _database = await openDatabase(
+      path,
+      version: 1,
+      onCreate: (db, version) async {
+        await db.execute(Constants.categoriesQuery);
+      },
+    );
+    return _database!;
   }
 }
