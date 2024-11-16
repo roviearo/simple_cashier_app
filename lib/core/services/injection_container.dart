@@ -7,10 +7,12 @@ import 'package:simple_cashier_app/src/authentication/domain/repository/authenti
 import 'package:simple_cashier_app/src/authentication/domain/repository/authentication_secure_storage_repopsitory.dart';
 import 'package:simple_cashier_app/src/authentication/domain/usecases/delete_access_token.dart';
 import 'package:simple_cashier_app/src/authentication/domain/usecases/get_access_token.dart';
+import 'package:simple_cashier_app/src/authentication/domain/usecases/get_local_database.dart';
 import 'package:simple_cashier_app/src/authentication/domain/usecases/save_access_token.dart';
 import 'package:simple_cashier_app/src/authentication/domain/usecases/sign_in.dart';
 import 'package:simple_cashier_app/src/authentication/domain/usecases/sign_out.dart';
 import 'package:simple_cashier_app/src/authentication/domain/usecases/sign_up.dart';
+import 'package:simple_cashier_app/src/authentication/presentation/local_database/local_database_cubit.dart';
 import 'package:simple_cashier_app/src/category/data/datasources/category_remote_data_source.dart';
 import 'package:simple_cashier_app/src/category/data/repositories/category_repository_implementation.dart';
 import 'package:simple_cashier_app/src/category/domain/repository/category_repository.dart';
@@ -40,6 +42,7 @@ Future<void> init() async {
         signIn: sl(),
         signOut: sl(),
         signUp: sl()))
+    ..registerFactory(() => LocalDatabaseCubit(getLocalDatabase: sl()))
     ..registerFactory(() => AddCategoryCubit(addCategory: sl()))
     ..registerFactory(() => DeleteCategoryCubit(deleteCategory: sl()))
     ..registerFactory(() => ListCategoryCubit(getListCategory: sl()))
@@ -55,6 +58,7 @@ Future<void> init() async {
     ..registerLazySingleton(() => SignIn(sl()))
     ..registerLazySingleton(() => SignOut(sl()))
     ..registerLazySingleton(() => SignUp(sl()))
+    ..registerLazySingleton(() => GetLocalDatabase(sl()))
 
     /* Category */
     ..registerLazySingleton(() => AddCategory(sl()))

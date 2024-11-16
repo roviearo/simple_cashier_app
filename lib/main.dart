@@ -6,6 +6,7 @@ import 'package:simple_cashier_app/core/utils/env.dart';
 import 'package:simple_cashier_app/core/utils/router.dart';
 import 'package:simple_cashier_app/core/utils/simple_bloc_observer.dart';
 import 'package:simple_cashier_app/src/authentication/presentation/authentication/authentication_bloc.dart';
+import 'package:simple_cashier_app/src/authentication/presentation/local_database/local_database_cubit.dart';
 import 'package:simple_cashier_app/src/category/presentation/cubits/add_category/add_category_cubit.dart';
 import 'package:simple_cashier_app/src/category/presentation/cubits/delete_category/delete_category_cubit.dart';
 import 'package:simple_cashier_app/src/category/presentation/cubits/list_category/list_category_cubit.dart';
@@ -37,6 +38,7 @@ class MainApp extends StatelessWidget {
         BlocProvider(
             create: (context) =>
                 sl<AuthenticationBloc>()..add(const AppStarted())),
+        BlocProvider(create: (context) => sl<LocalDatabaseCubit>()),
         BlocProvider(create: (context) => sl<AddCategoryCubit>()),
         BlocProvider(create: (context) => sl<DeleteCategoryCubit>()),
         BlocProvider(create: (context) => sl<ListCategoryCubit>()),
