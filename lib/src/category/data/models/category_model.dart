@@ -12,10 +12,13 @@ class CategoryModel extends Category {
 
   CategoryModel.fromMap(DataMap data)
       : this(
-            id: data['id'],
-            name: data['name'],
-            createdAt: DateTime.parse(data['created_at']),
-            isSynced: data['is_synced']);
+          id: data['id'],
+          name: data['name'],
+          createdAt: DateTime.parse(data['created_at']),
+          isSynced: (data['is_synced']).runtimeType is int
+              ? false
+              : data['is_synced'],
+        );
 
   CategoryModel copyWith({
     int? id,

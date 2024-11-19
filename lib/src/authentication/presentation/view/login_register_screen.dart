@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:simple_cashier_app/core/utils/router.dart';
 import 'package:simple_cashier_app/src/authentication/presentation/authentication/authentication_bloc.dart';
-import 'package:simple_cashier_app/src/authentication/presentation/local_database/local_database_cubit.dart';
 import 'package:simple_cashier_app/src/category/presentation/cubits/list_category/list_category_cubit.dart';
 
 class LoginRegisterScreen extends StatefulWidget {
@@ -50,7 +49,6 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
           }
 
           if (state is Authenticated) {
-            context.read<LocalDatabaseCubit>().loadLocalDatabase();
             context.read<ListCategoryCubit>().getListCategory();
             router.goNamed('main');
           }

@@ -9,5 +9,4 @@ abstract class AuthenticationRepository {
   ResultFuture<supabase.User?> signUp(
       {required String email, required String password});
   ResultVoid signOut();
-  ResultFuture<Database> getLocalDatabase();
 }

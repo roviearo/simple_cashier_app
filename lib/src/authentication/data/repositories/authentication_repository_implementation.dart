@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:simple_cashier_app/core/errors/exception.dart';
 import 'package:simple_cashier_app/core/errors/failure.dart';
 import 'package:simple_cashier_app/core/utils/typedef.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 import 'package:simple_cashier_app/src/authentication/data/datasources/authentication_remote_data_source.dart';
@@ -49,17 +48,6 @@ class AuthenticationRepositoryImplementation
     try {
       final result = await _authenticationRemoteDataSource.signUp(
           email: email, password: password);
-
-      return Right(result);
-    } on APIException catch (e) {
-      return Left(APIFailure.fromException(e));
-    }
-  }
-
-  @override
-  ResultFuture<Database> getLocalDatabase() async {
-    try {
-      final result = await _authenticationRemoteDataSource.getLocalDatabase();
 
       return Right(result);
     } on APIException catch (e) {
