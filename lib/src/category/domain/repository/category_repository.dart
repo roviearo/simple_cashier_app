@@ -6,4 +6,7 @@ abstract class CategoryRepository {
   ResultVoid addCategory(String name);
   ResultVoid deleteCategory(int id);
   ResultVoid updateCategory(int id, String name);
+  ResultFuture<List<Category>> getLocalListCategory();
+  ResultVoid addLocalCategory(String name);
+  ResultVoid syncRemoteToLocal();
 }

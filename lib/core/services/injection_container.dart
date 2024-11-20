@@ -13,16 +13,14 @@ import 'package:simple_cashier_app/src/authentication/domain/usecases/sign_in.da
 import 'package:simple_cashier_app/src/authentication/domain/usecases/sign_out.dart';
 import 'package:simple_cashier_app/src/authentication/domain/usecases/sign_up.dart';
 import 'package:simple_cashier_app/src/category/data/datasources/category_remote_data_source.dart';
-import 'package:simple_cashier_app/src/category/data/datasources/local_category_remote_data_source.dart';
 import 'package:simple_cashier_app/src/category/data/repositories/category_repository_implementation.dart';
-import 'package:simple_cashier_app/src/category/data/repositories/local_category_repository_implementation.dart';
 import 'package:simple_cashier_app/src/category/domain/repository/category_repository.dart';
-import 'package:simple_cashier_app/src/category/domain/repository/local_category_repository.dart';
 import 'package:simple_cashier_app/src/category/domain/usecases/add_category.dart';
 import 'package:simple_cashier_app/src/category/domain/usecases/add_local_category.dart';
 import 'package:simple_cashier_app/src/category/domain/usecases/delete_category.dart';
 import 'package:simple_cashier_app/src/category/domain/usecases/get_list_category.dart';
 import 'package:simple_cashier_app/src/category/domain/usecases/get_local_list_category.dart';
+import 'package:simple_cashier_app/src/category/domain/usecases/sync_remote_to_local.dart';
 import 'package:simple_cashier_app/src/category/domain/usecases/update_category.dart';
 import 'package:simple_cashier_app/src/category/presentation/cubits/add_category/add_category_cubit.dart';
 import 'package:simple_cashier_app/src/category/presentation/cubits/delete_category/delete_category_cubit.dart';
@@ -38,6 +36,8 @@ import 'package:simple_cashier_app/src/authentication/presentation/authenticatio
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  final db = await DatabaseHelper.initDb();
+
   sl
     ..registerFactory(() => AuthenticationBloc(
         authState: sl(),
@@ -72,6 +72,7 @@ Future<void> init() async {
     ..registerLazySingleton(() => UpdateCategory(sl()))
     ..registerLazySingleton(() => AddLocalCategory(sl()))
     ..registerLazySingleton(() => GetLocalListCategory(sl()))
+    ..registerLazySingleton(() => SyncRemoteToLocal(sl()))
 
     // Repositories
 
@@ -84,8 +85,6 @@ Future<void> init() async {
     /* Category */
     ..registerLazySingleton<CategoryRepository>(
         () => CategoryRepositoryImplementation(sl()))
-    ..registerLazySingleton<LocalCategoryRepository>(
-        () => LocalCategoryRepositoryImplementation(sl()))
 
     // Data Sources
 
@@ -97,14 +96,12 @@ Future<void> init() async {
 
     /* Category */
     ..registerLazySingleton<CategoryRemoteDataSource>(
-        () => CategoryRemoteDataSrcImpl(sl()))
-    ..registerLazySingleton<LocalCategoryRemoteDataSource>(
-        () => LocalCategoryRemoteDataSrcImpl(sl()))
+        () => CategoryRemoteDataSrcImpl(sl(), sl()))
 
     // External Dependencies
     ..registerLazySingleton(() => supabase.Supabase.instance.client.auth)
     ..registerLazySingleton(() => supabase.Supabase.instance.client)
-    ..registerLazySingleton(() async => await DatabaseHelper.initDb())
+    ..registerLazySingleton(() => db)
     ..registerLazySingleton<FlutterSecureStorage>(
         () => const FlutterSecureStorage())
     ..isReady<Database>()

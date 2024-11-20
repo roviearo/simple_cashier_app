@@ -54,4 +54,37 @@ class CategoryRepositoryImplementation implements CategoryRepository {
       return Left(APIFailure.fromException(e));
     }
   }
+
+  @override
+  ResultVoid addLocalCategory(String name) async {
+    try {
+      await _categoryRemoteDataSource.addLocalCategory(name);
+
+      return const Right(null);
+    } on APIException catch (e) {
+      return Left(APIFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<List<Category>> getLocalListCategory() async {
+    try {
+      final result = await _categoryRemoteDataSource.getLocalListCategory();
+
+      return Right(result);
+    } on APIException catch (e) {
+      return Left(APIFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid syncRemoteToLocal() async {
+    try {
+      await _categoryRemoteDataSource.syncRemoteToLocal();
+
+      return const Right(null);
+    } on APIException catch (e) {
+      return Left(APIFailure.fromException(e));
+    }
+  }
 }

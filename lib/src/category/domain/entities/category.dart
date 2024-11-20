@@ -16,14 +16,24 @@ class Category extends Equatable {
           name: '',
           createdAt: const ConstDateTime(2024),
           updatedAt: const ConstDateTime(2024),
-          isSynced: false,
+          isSynced: 0,
         );
 
   final int id;
   final String name;
   final DateTime createdAt;
   final DateTime? updatedAt;
-  final bool isSynced;
+  final int isSynced;
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'updated_at': updatedAt,
+      'created_at': createdAt,
+      'is_synced': isSynced,
+    };
+  }
 
   @override
   List<Object?> get props => [id, name, createdAt, updatedAt, isSynced];

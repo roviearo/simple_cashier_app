@@ -80,40 +80,44 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     }
 
                     return Expanded(
-                      child: ListView.builder(
-                        itemCount: listCategory.length,
-                        itemBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text(listCategory[index].name),
-                                  const Expanded(child: SizedBox.shrink()),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: SvgPicture.asset(
-                                      'icons/edit.svg',
-                                      colorFilter: ColorFilter.mode(
-                                        Theme.of(context).colorScheme.primary,
-                                        BlendMode.srcIn,
+                      child: RefreshIndicator(
+                        onRefresh: () =>
+                            context.read<ListCategoryCubit>().getListCategory(),
+                        child: ListView.builder(
+                          itemCount: listCategory.length,
+                          itemBuilder: (context, index) => Padding(
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(listCategory[index].name),
+                                    const Expanded(child: SizedBox.shrink()),
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: SvgPicture.asset(
+                                        'icons/edit.svg',
+                                        colorFilter: ColorFilter.mode(
+                                          Theme.of(context).colorScheme.primary,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: SvgPicture.asset(
-                                      'icons/minus.svg',
-                                      colorFilter: ColorFilter.mode(
-                                        Theme.of(context).colorScheme.primary,
-                                        BlendMode.srcIn,
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: SvgPicture.asset(
+                                        'icons/minus.svg',
+                                        colorFilter: ColorFilter.mode(
+                                          Theme.of(context).colorScheme.primary,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const Divider(),
-                            ],
+                                  ],
+                                ),
+                                const Divider(),
+                              ],
+                            ),
                           ),
                         ),
                       ),

@@ -15,9 +15,7 @@ class CategoryModel extends Category {
           id: data['id'],
           name: data['name'],
           createdAt: DateTime.parse(data['created_at']),
-          isSynced: (data['is_synced']).runtimeType is int
-              ? false
-              : data['is_synced'],
+          isSynced: data['is_synced'],
         );
 
   CategoryModel copyWith({
@@ -25,7 +23,7 @@ class CategoryModel extends Category {
     String? name,
     DateTime? createdAt,
     DateTime? updatedAt,
-    bool? isSynced,
+    int? isSynced,
   }) {
     return CategoryModel(
       id: id ?? this.id,
