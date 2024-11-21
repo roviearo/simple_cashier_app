@@ -60,7 +60,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                               context.read<AddCategoryCubit>().addCategory();
                             }
                           },
-                          child: SvgPicture.asset('icons/add.svg'),
+                          child: SvgPicture.asset(
+                            'icons/add.svg',
+                            colorFilter: ColorFilter.mode(
+                                Theme.of(context).colorScheme.onPrimary,
+                                BlendMode.srcIn),
+                          ),
                         ),
                       ),
                     ],
@@ -81,8 +86,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
                     return Expanded(
                       child: RefreshIndicator(
-                        onRefresh: () =>
-                            context.read<ListCategoryCubit>().getListCategory(),
+                        onRefresh: () async {
+                          context
+                              .read<ListCategoryCubit>()
+                              .syncToLocalCategory();
+                          context.read<ListCategoryCubit>().getListCategory();
+                        },
                         child: ListView.builder(
                           itemCount: listCategory.length,
                           itemBuilder: (context, index) => Padding(

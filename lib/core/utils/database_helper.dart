@@ -18,7 +18,6 @@ class DatabaseHelper {
         await db.execute(Constants.categoriesQuery);
       },
     );
-    print('database: ${await _database!.query('categories')}');
     return _database!;
   }
 }

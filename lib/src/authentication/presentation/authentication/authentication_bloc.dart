@@ -89,36 +89,50 @@ class AuthenticationBloc
     SignInEvent event,
     Emitter<AuthenticationState> emit,
   ) async {
-    emit(const Loading());
+    final connectivityResult = await Connectivity().checkConnectivity();
 
-    final result = await _signIn
-        .call(SignInParams(email: event.email, password: event.password));
+    if (connectivityResult.contains(ConnectivityResult.mobile) ||
+        connectivityResult.contains(ConnectivityResult.wifi)) {
+      emit(const Loading());
 
-    result.fold(
-      (failure) =>
-          emit(AuthenticationError(failure.message, failure.errorCode)),
-      (user) {
-        emit(const Authenticated());
-      },
-    );
+      final result = await _signIn
+          .call(SignInParams(email: event.email, password: event.password));
+
+      result.fold(
+        (failure) =>
+            emit(AuthenticationError(failure.message, failure.errorCode)),
+        (user) {
+          emit(const Authenticated());
+        },
+      );
+    } else {
+      emit(const InternetOffline());
+    }
   }
 
   _onSignUpEvent(
     SignUpEvent event,
     Emitter<AuthenticationState> emit,
   ) async {
-    emit(const Loading());
+    final connectivityResult = await Connectivity().checkConnectivity();
 
-    final result = await _signUp
-        .call(SignUpParams(email: event.email, password: event.password));
+    if (connectivityResult.contains(ConnectivityResult.mobile) ||
+        connectivityResult.contains(ConnectivityResult.wifi)) {
+      emit(const Loading());
 
-    result.fold(
-      (failure) =>
-          emit(AuthenticationError(failure.message, failure.errorCode)),
-      (user) {
-        emit(const Authenticated());
-      },
-    );
+      final result = await _signUp
+          .call(SignUpParams(email: event.email, password: event.password));
+
+      result.fold(
+        (failure) =>
+            emit(AuthenticationError(failure.message, failure.errorCode)),
+        (user) {
+          emit(const Authenticated());
+        },
+      );
+    } else {
+      emit(const InternetOffline());
+    }
   }
 
   _onSignOutEvent(

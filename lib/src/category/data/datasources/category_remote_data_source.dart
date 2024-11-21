@@ -85,7 +85,7 @@ class CategoryRemoteDataSrcImpl implements CategoryRemoteDataSource {
   @override
   Future<List<Category>> getLocalListCategory() async {
     try {
-      final response = await _database.query('categories');
+      final response = await _database.query('categories', orderBy: 'name');
 
       return response.map((data) => CategoryModel.fromMap(data)).toList();
     } on APIException catch (e) {
@@ -96,16 +96,39 @@ class CategoryRemoteDataSrcImpl implements CategoryRemoteDataSource {
   @override
   Future<void> syncRemoteToLocal() async {
     try {
-      final batch = _database.batch();
       final localCategories = await getLocalListCategory();
       final remoteCategories = await getListCategory();
 
       if (localCategories.isEmpty) {
+        final batch = _database.batch();
         for (var category in remoteCategories) {
-          batch.insert('categories', category.toMap());
+          batch.insert('categories', category.toMap(),
+              conflictAlgorithm: ConflictAlgorithm.replace);
         }
 
         await batch.commit();
+      }
+
+      for (var localCategory in localCategories) {
+        final Category? remoteCategory = remoteCategories
+            .where((category) => category.id == localCategory.id)
+            .firstOrNull;
+
+        if (remoteCategory == null) {
+          await _supabaseClient
+              .from('categories')
+              .insert(localCategory.toMap());
+        } else if (localCategory.updatedAt.isAfter(remoteCategory.updatedAt)) {
+          await _supabaseClient
+              .from('categories')
+              .upsert(localCategory.toMap())
+              .eq('id', remoteCategory.id);
+          await _database.update('categories', remoteCategory.toMap(),
+              where: 'id = ?', whereArgs: [localCategory.id]);
+        } else if (remoteCategory.updatedAt.isAfter(localCategory.updatedAt)) {
+          await _database.update('categories', {'is_synced': 1},
+              where: 'id = ?', whereArgs: [localCategory.id]);
+        }
       }
     } on APIException catch (e) {
       throw APIException(message: e.message, statusCode: 505);

@@ -6,7 +6,7 @@ class CategoryModel extends Category {
     required super.id,
     required super.name,
     required super.createdAt,
-    super.updatedAt,
+    required super.updatedAt,
     required super.isSynced,
   });
 
@@ -15,6 +15,7 @@ class CategoryModel extends Category {
           id: data['id'],
           name: data['name'],
           createdAt: DateTime.parse(data['created_at']),
+          updatedAt: DateTime.parse(data['updated_at']),
           isSynced: data['is_synced'],
         );
 

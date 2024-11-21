@@ -20,7 +20,7 @@ import 'package:simple_cashier_app/src/category/domain/usecases/add_local_catego
 import 'package:simple_cashier_app/src/category/domain/usecases/delete_category.dart';
 import 'package:simple_cashier_app/src/category/domain/usecases/get_list_category.dart';
 import 'package:simple_cashier_app/src/category/domain/usecases/get_local_list_category.dart';
-import 'package:simple_cashier_app/src/category/domain/usecases/sync_remote_to_local.dart';
+import 'package:simple_cashier_app/src/category/domain/usecases/sync_remote_to_local_category.dart';
 import 'package:simple_cashier_app/src/category/domain/usecases/update_category.dart';
 import 'package:simple_cashier_app/src/category/presentation/cubits/add_category/add_category_cubit.dart';
 import 'package:simple_cashier_app/src/category/presentation/cubits/delete_category/delete_category_cubit.dart';
@@ -50,8 +50,11 @@ Future<void> init() async {
     ..registerFactory(
         () => AddCategoryCubit(addCategory: sl(), addLocalCategory: sl()))
     ..registerFactory(() => DeleteCategoryCubit(deleteCategory: sl()))
-    ..registerFactory(() =>
-        ListCategoryCubit(getListCategory: sl(), getLocalListCategory: sl()))
+    ..registerFactory(() => ListCategoryCubit(
+          getListCategory: sl(),
+          getLocalListCategory: sl(),
+          syncRemoteToLocalCategory: sl(),
+        ))
     ..registerFactory(() => UpdateCategoryCubit(updateCategory: sl()))
 
     // Usecases
@@ -72,7 +75,7 @@ Future<void> init() async {
     ..registerLazySingleton(() => UpdateCategory(sl()))
     ..registerLazySingleton(() => AddLocalCategory(sl()))
     ..registerLazySingleton(() => GetLocalListCategory(sl()))
-    ..registerLazySingleton(() => SyncRemoteToLocal(sl()))
+    ..registerLazySingleton(() => SyncRemoteToLocalCategory(sl()))
 
     // Repositories
 

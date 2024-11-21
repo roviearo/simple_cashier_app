@@ -6,7 +6,7 @@ class Category extends Equatable {
     required this.id,
     required this.name,
     required this.createdAt,
-    this.updatedAt,
+    required this.updatedAt,
     required this.isSynced,
   });
 
@@ -22,15 +22,15 @@ class Category extends Equatable {
   final int id;
   final String name;
   final DateTime createdAt;
-  final DateTime? updatedAt;
+  final DateTime updatedAt;
   final int isSynced;
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
-      'updated_at': updatedAt,
-      'created_at': createdAt,
+      'updated_at': updatedAt.toIso8601String(),
+      'created_at': createdAt.toIso8601String(),
       'is_synced': isSynced,
     };
   }

@@ -33,28 +33,29 @@ class AddCategoryCubit extends Cubit<AddCategoryState> {
 
     final connectivityResult = await Connectivity().checkConnectivity();
 
-    if (connectivityResult.contains(ConnectivityResult.mobile) ||
-        connectivityResult.contains(ConnectivityResult.wifi)) {
-      if (state.name.isNotEmpty) {
-        final result = await _addCategory.call(AddCategoryParams(state.name));
+    if (state.name.isNotEmpty) {
+      final result =
+          await _addLocalCategory.call(AddLocalCategoryParams(state.name));
 
-        result.fold(
-          (failure) => emit(state.copyWith(
-              message: failure.message, status: AddCategoryStatus.error)),
-          (_) => emit(state.copyWith(status: AddCategoryStatus.success)),
-        );
-      }
-    } else {
-      if (state.name.isNotEmpty) {
-        final result =
-            await _addLocalCategory.call(AddLocalCategoryParams(state.name));
+      result.fold(
+        (failure) => emit(state.copyWith(
+            message: failure.message, status: AddCategoryStatus.error)),
+        (_) async {
+          if (connectivityResult.contains(ConnectivityResult.mobile) ||
+              connectivityResult.contains(ConnectivityResult.wifi)) {
+            final result =
+                await _addCategory.call(AddCategoryParams(state.name));
 
-        result.fold(
-          (failure) => emit(state.copyWith(
-              message: failure.message, status: AddCategoryStatus.error)),
-          (_) => emit(state.copyWith(status: AddCategoryStatus.success)),
-        );
-      }
+            result.fold(
+              (failure) => emit(state.copyWith(
+                  message: failure.message, status: AddCategoryStatus.error)),
+              (_) => emit(state.copyWith(status: AddCategoryStatus.success)),
+            );
+          } else {
+            emit(state.copyWith(status: AddCategoryStatus.success));
+          }
+        },
+      );
     }
   }
 }

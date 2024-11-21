@@ -13,6 +13,7 @@ class SplashScreen extends StatelessWidget {
     return BlocConsumer<AuthenticationBloc, AuthenticationState>(
       listener: (context, state) async {
         if (state is Authenticated) {
+          context.read<ListCategoryCubit>().syncToLocalCategory();
           context.read<ListCategoryCubit>().getListCategory();
           await Future.delayed(const Duration(seconds: 3))
               .then((value) => router.goNamed('main'));

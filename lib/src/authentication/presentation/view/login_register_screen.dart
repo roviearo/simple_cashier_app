@@ -46,9 +46,17 @@ class _LoginRegisterScreenState extends State<LoginRegisterScreen> {
                 ),
               ),
             );
+            router.pop();
+          }
+
+          if (state is InternetOffline) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text(
+                    'Untuk masuk / daftar anda harus terkoneksi dengan internet.\nCek kembali koneksi internet anda.')));
           }
 
           if (state is Authenticated) {
+            context.read<ListCategoryCubit>().syncToLocalCategory();
             context.read<ListCategoryCubit>().getListCategory();
             router.goNamed('main');
           }
